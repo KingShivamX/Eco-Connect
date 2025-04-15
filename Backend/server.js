@@ -36,8 +36,6 @@ app.get('/', (req, res) => {
   res.send('🌿 EcoConnect API is running');
 });
 
-// Start server
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`🌎 Server running on port ${PORT}`);
-});
+// Do NOT start the server when deploying to Vercel
+// Instead, export the app for serverless deployment
+module.exports = app;
