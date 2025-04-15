@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { apiFetch } from '../utils/api';
 
 const Home = () => {
   const { currentUser } = useAuth();
@@ -12,11 +13,11 @@ const Home = () => {
     const fetchData = async () => {
       try {
         // Fetch recent posts
-        const postsResponse = await fetch('http://localhost:5000/api/posts?limit=3');
+        const postsResponse = await apiFetch('/api/posts?limit=3');
         const postsData = await postsResponse.json();
         
         // Fetch upcoming events
-        const eventsResponse = await fetch('http://localhost:5000/api/events?upcoming=true&limit=3');
+        const eventsResponse = await apiFetch('/api/events?upcoming=true&limit=3');
         const eventsData = await eventsResponse.json();
         
         setRecentPosts(postsData.posts || []);

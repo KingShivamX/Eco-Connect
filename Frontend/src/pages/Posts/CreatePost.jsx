@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { apiFetch } from '../../utils/api';
 
 const CreatePost = () => {
   const [form, setForm] = useState({ title: '', content: '', category: 'other' });
@@ -18,7 +19,7 @@ const CreatePost = () => {
     try {
       // Send POST request to backend with auth token
       const token = localStorage.getItem('eco_token');
-      const res = await fetch('http://localhost:5000/api/posts', {
+      const res = await apiFetch('/api/posts', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

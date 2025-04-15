@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { apiFetch } from '../../utils/api';
 
 const Posts = () => {
   const { currentUser } = useAuth();
@@ -12,7 +13,7 @@ const Posts = () => {
     const fetchPosts = async () => {
       try {
         setLoading(true);
-        const res = await fetch('http://localhost:5000/api/posts');
+        const res = await apiFetch('/api/posts');
         const data = await res.json();
         if (res.ok) {
           setPosts(data.posts || []);
@@ -71,7 +72,7 @@ const Posts = () => {
                     e.stopPropagation();
                     if(window.confirm('Are you sure you want to delete this post?')) {
                       const token = localStorage.getItem('eco_token');
-                      await fetch(`http://localhost:5000/api/posts/${post._id}`, {
+                      await apiFetch(`/api/posts/${post._id}`, {
                         method: 'DELETE',
                         headers: {
                           ...(token ? { 'Authorization': `Bearer ${token}` } : {})

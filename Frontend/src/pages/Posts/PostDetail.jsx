@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { apiFetch } from '../../utils/api';
 
 const PostDetail = () => {
   const { id } = useParams();
@@ -11,7 +12,7 @@ const PostDetail = () => {
     const fetchPost = async () => {
       try {
         setLoading(true);
-        const res = await fetch(`http://localhost:5000/api/posts/${id}`);
+        const res = await apiFetch(`/api/posts/${id}`);
         const data = await res.json();
         if (res.ok) {
           setPost(data);

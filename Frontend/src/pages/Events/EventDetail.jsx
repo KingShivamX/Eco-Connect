@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { apiFetch } from '../../utils/api';
 
 const EventDetail = () => {
   const { id } = useParams();
@@ -11,7 +12,7 @@ const EventDetail = () => {
     const fetchEvent = async () => {
       try {
         setLoading(true);
-        const res = await fetch(`http://localhost:5000/api/events/${id}`);
+        const res = await apiFetch(`/api/events/${id}`);
         const data = await res.json();
         if (res.ok) {
           setEvent(data);
