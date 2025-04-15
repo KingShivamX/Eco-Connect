@@ -106,7 +106,7 @@ const CreateEvent = () => {
         </div>
         <button
           type="submit"
-          className="bg-black hover:bg-gray-900 text-white font-bold py-2 px-4 rounded"
+          className="bg-black text-white hover:bg-gray-900 font-bold py-2 px-4 rounded"
           disabled={loading}
         >
           {loading ? 'Creating...' : 'Create Event'}

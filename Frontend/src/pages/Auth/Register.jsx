@@ -138,9 +138,9 @@ const Register = () => {
         
         <div className="flex items-center justify-between mb-4">
           <button
-            className="bg-eco-green-600 hover:bg-eco-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
             type="submit"
             disabled={loading}
+            className="bg-black text-white hover:bg-gray-900 font-bold py-2 px-4 rounded"
           >
             {loading ? (
               <span className="flex items-center justify-center">

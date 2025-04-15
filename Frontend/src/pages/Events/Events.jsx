@@ -80,7 +80,7 @@ const Events = () => {
                       setEvents(events => events.filter(ev => ev._id !== event._id));
                     }
                   }}
-                  className="absolute top-2 left-2 bg-red-600 hover:bg-red-800 text-white text-xs px-3 py-1 rounded shadow z-10"
+                  className="absolute top-2 left-2 bg-black hover:bg-gray-900 text-white text-xs px-3 py-1 rounded shadow z-10"
                 >
                   Delete
                 </button>
