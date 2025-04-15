@@ -12,7 +12,8 @@ app.use(
   cors({
     origin: [
       'http://localhost:5173',
-      'https://eco-connect-frontend.vercel.app'
+      'https://eco-connect-frontend.vercel.app',
+      'https://eco-connect-mit.vercel.app'
     ],
     credentials: true,
     allowedHeaders: ['Content-Type', 'Authorization'],
