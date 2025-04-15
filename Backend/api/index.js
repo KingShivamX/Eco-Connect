@@ -8,7 +8,17 @@ const postRoutes = require('../routes/posts');
 const eventRoutes = require('../routes/events');
 
 const app = express();
-app.use(cors());
+app.use(
+  cors({
+    origin: [
+      'http://localhost:5173',
+      'https://eco-connect-frontend.vercel.app'
+    ],
+    credentials: true,
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
+  })
+);
 app.use(express.json());
 
 // MongoDB connection (as you have)
