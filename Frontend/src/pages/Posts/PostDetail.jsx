@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { apiFetch } from '../../utils/api';
+import { useAuth } from '../../context/AuthContext.jsx';
 
 const PostDetail = () => {
+  const { currentUser, token } = useAuth();
+  const navigate = useNavigate();
   const { id } = useParams();
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -46,6 +49,7 @@ const PostDetail = () => {
 
   return (
     <div className="bg-white rounded-lg shadow-md p-8 border border-eco-green-100">
+
       <h1 className="text-3xl font-bold text-eco-green-800 mb-4">{post.title}</h1>
       <div className="flex items-center mb-6 text-sm text-gray-500">
         <span>By {post.author?.name || 'Anonymous'}</span>
@@ -67,6 +71,30 @@ const PostDetail = () => {
           ))}
         </div>
       )}
+      {currentUser && (currentUser.role === 'admin' || currentUser._id === post.author?._id) && (
+        <button
+          onClick={async () => {
+            if (window.confirm('Are you sure you want to delete this post?')) {
+              const res = await apiFetch(`/api/posts/${post._id}`, {
+                method: 'DELETE',
+                headers: {
+                  ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+                }
+              });
+              if (res.ok) {
+                navigate('/posts');
+              } else {
+                const data = await res.json();
+                alert(data.message || 'Failed to delete post');
+              }
+            }
+          }}
+          className="bg-black hover:bg-gray-900 text-white text-base px-5 py-2 rounded shadow mb-4 ml-0"
+          style={{ display: 'inline-block' }}
+        >
+          Delete
+        </button>
+      )}
       {/* Comments */}
       <section className="mt-8">
         <h2 className="text-xl font-semibold text-eco-green-700 mb-4">Comments</h2>
@@ -86,6 +114,7 @@ const PostDetail = () => {
           <p className="text-gray-500">No comments yet. Be the first to comment!</p>
         )}
       </section>
+      {/* Delete Button */}
       <div className="mt-8">
         <Link to="/posts" className="text-eco-green-600 hover:text-eco-green-800 font-medium">← Back to Posts</Link>
       </div>

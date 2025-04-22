@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { apiFetch } from '../../utils/api';
+import { useAuth } from '../../context/AuthContext.jsx';
 
 const EventDetail = () => {
+  const { currentUser, token } = useAuth();
+  const navigate = useNavigate();
   const { id } = useParams();
   const [event, setEvent] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -65,6 +68,31 @@ const EventDetail = () => {
           {event.attendees?.length || 0} Attending
         </span>
       </div>
+      {/* Delete Button */}
+      {currentUser && (currentUser.role === 'admin' || currentUser._id === event.organizer?._id) && (
+        <button
+          onClick={async () => {
+            if (window.confirm('Are you sure you want to delete this event?')) {
+              const res = await apiFetch(`/api/events/${event._id}`, {
+                method: 'DELETE',
+                headers: {
+                  ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+                }
+              });
+              if (res.ok) {
+                navigate('/events');
+              } else {
+                const data = await res.json();
+                alert(data.message || 'Failed to delete event');
+              }
+            }
+          }}
+          className="bg-black hover:bg-gray-900 text-white text-xs px-3 py-1 rounded shadow mb-3 ml-0"
+          style={{ display: 'inline-block' }}
+        >
+          Delete
+        </button>
+      )}
       <div className="mt-8">
         <Link to="/events" className="text-eco-green-600 hover:text-eco-green-800 font-medium">← Back to Events</Link>
       </div>

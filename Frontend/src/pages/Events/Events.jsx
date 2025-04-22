@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '../../context/AuthContext.jsx';
 import { apiFetch } from '../../utils/api';
 
 const Events = () => {
@@ -51,26 +51,23 @@ const Events = () => {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {events.map(event => (
-            <div key={event._id} className="relative group">
-              <Link
-                to={`/events/${event._id}`}
-                className="block bg-white rounded-lg shadow hover:shadow-lg transition-shadow border border-eco-green-100 p-6"
-              >
-                <h2 className="text-xl font-semibold text-eco-green-800 mb-2 line-clamp-2">{event.title}</h2>
-                <p className="text-gray-600 mb-4 line-clamp-3">{event.description?.substring(0, 180)}...</p>
-                <div className="flex items-center justify-between text-sm text-gray-500">
+            <div key={event._id} className="relative bg-white rounded-lg shadow-md p-6 mb-6 border border-eco-green-100">
+              <Link to={`/events/${event._id}`} className="block hover:underline">
+                <h2 className="text-xl font-bold text-eco-green-800 mb-2">{event.title}</h2>
+                <div className="flex items-center mb-2 text-sm text-gray-500">
                   <span>{new Date(event.date).toLocaleDateString()}</span>
+                  <span className="mx-2">•</span>
+                  <span>{event.location}</span>
+                  <span className="mx-2">•</span>
                   <span className="capitalize">{event.category}</span>
                 </div>
+                <p className="text-gray-700 mb-2 line-clamp-3">{event.description}</p>
               </Link>
-              {/* Delete button for organizer or admin */}
-              {(event.organizer && currentUser && event.organizer._id === currentUser.id) || (currentUser && currentUser.role === 'admin') ? (
+              {(currentUser && (currentUser.role === 'admin' || currentUser._id === event.organizer?._id)) && (
                 <button
-                  onClick={async (e) => {
-                    e.stopPropagation();
+                  onClick={async () => {
                     if (window.confirm('Are you sure you want to delete this event?')) {
-                      const token = localStorage.getItem('eco_token');
-                      await apiFetch(`/api/events/${event._id}`, {
+                      const res = await apiFetch(`/api/events/${event._id}`, {
                         method: 'DELETE',
                         headers: {
                           ...(token ? { Authorization: `Bearer ${token}` } : {})
@@ -84,7 +81,7 @@ const Events = () => {
                 >
                   Delete
                 </button>
-              ) : null}
+              )}
             </div>
           ))}
         </div>
