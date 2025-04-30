@@ -63,25 +63,6 @@ const Events = () => {
                 </div>
                 <p className="text-gray-700 mb-2 line-clamp-3">{event.description}</p>
               </Link>
-              {(currentUser && (currentUser.role === 'admin' || currentUser._id === event.organizer?._id)) && (
-                <button
-                  onClick={async () => {
-                    if (window.confirm('Are you sure you want to delete this event?')) {
-                      const res = await apiFetch(`/api/events/${event._id}`, {
-                        method: 'DELETE',
-                        headers: {
-                          ...(token ? { Authorization: `Bearer ${token}` } : {})
-                        }
-                      });
-                      // Refresh events
-                      setEvents(events => events.filter(ev => ev._id !== event._id));
-                    }
-                  }}
-                  className="absolute top-2 left-2 bg-black hover:bg-gray-900 text-white text-xs px-3 py-1 rounded shadow z-10"
-                >
-                  Delete
-                </button>
-              )}
             </div>
           ))}
         </div>

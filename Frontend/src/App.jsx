@@ -12,9 +12,11 @@ import Register from './pages/Auth/Register';
 import Posts from './pages/Posts/Posts';
 import PostDetail from './pages/Posts/PostDetail';
 import CreatePost from './pages/Posts/CreatePost';
+import UpdatePost from './pages/Posts/UpdatePost';
 import Events from './pages/Events/Events';
 import EventDetail from './pages/Events/EventDetail';
 import CreateEvent from './pages/Events/CreateEvent';
+import UpdateEvent from './pages/Events/UpdateEvent';
 import Profile from './pages/Profile/Profile';
 import NotFound from './pages/NotFound';
 
@@ -38,9 +40,11 @@ function App() {
             <Route path="posts" element={<Posts />} />
             <Route path="posts/:id" element={<PostDetail />} />
             <Route path="posts/create" element={<CreatePost />} />
+            <Route path="posts/:id/edit" element={<UpdatePost />} />
             <Route path="events" element={<Events />} />
             <Route path="events/:id" element={<EventDetail />} />
             <Route path="events/create" element={<CreateEvent />} />
+            <Route path="events/:id/edit" element={<UpdateEvent />} />
             <Route path="profile/:id?" element={<Profile />} />
             <Route path="*" element={<NotFound />} />
           </Route>

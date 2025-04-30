@@ -72,28 +72,36 @@ const PostDetail = () => {
         </div>
       )}
       {currentUser && (currentUser.role === 'admin' || currentUser._id === post.author?._id) && (
-        <button
-          onClick={async () => {
-            if (window.confirm('Are you sure you want to delete this post?')) {
-              const res = await apiFetch(`/api/posts/${post._id}`, {
-                method: 'DELETE',
-                headers: {
-                  ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+        <>
+          <Link
+            to={`/posts/${post._id}/edit`}
+            className="bg-black hover:bg-gray-900 text-white text-base px-5 py-2 rounded shadow mb-4 mr-2 inline-block"
+          >
+            Edit
+          </Link>
+          <button
+            onClick={async () => {
+              if (window.confirm('Are you sure you want to delete this post?')) {
+                const res = await apiFetch(`/api/posts/${post._id}`, {
+                  method: 'DELETE',
+                  headers: {
+                    ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+                  }
+                });
+                if (res.ok) {
+                  navigate('/posts');
+                } else {
+                  const data = await res.json();
+                  alert(data.message || 'Failed to delete post');
                 }
-              });
-              if (res.ok) {
-                navigate('/posts');
-              } else {
-                const data = await res.json();
-                alert(data.message || 'Failed to delete post');
               }
-            }
-          }}
-          className="bg-black hover:bg-gray-900 text-white text-base px-5 py-2 rounded shadow mb-4 ml-0"
-          style={{ display: 'inline-block' }}
-        >
-          Delete
-        </button>
+            }}
+            className="bg-black hover:bg-gray-900 text-white text-base px-5 py-2 rounded shadow mb-4 ml-0"
+            style={{ display: 'inline-block' }}
+          >
+            Delete
+          </button>
+        </>
       )}
       {/* Comments */}
       <section className="mt-8">
