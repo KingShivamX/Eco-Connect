@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { apiFetch } from '../../utils/api';
 import { useAuth } from '../../context/AuthContext.jsx';
+import CommentForm from '../../components/common/CommentForm';
+import CommentList from '../../components/common/CommentList';
 
 const PostDetail = () => {
   const { currentUser, token } = useAuth();
@@ -10,6 +12,62 @@ const PostDetail = () => {
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [commentSubmitting, setCommentSubmitting] = useState(false);
+
+  const handleCommentSubmit = async (text) => {
+    if (!currentUser) return;
+    
+    setCommentSubmitting(true);
+    try {
+      const res = await apiFetch(`/api/posts/${id}/comments`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+        },
+        body: JSON.stringify({ text })
+      });
+      
+      if (res.ok) {
+        const comments = await res.json();
+        setPost(prev => ({ ...prev, comments }));
+      } else {
+        const data = await res.json();
+        alert(data.message || 'Failed to add comment');
+      }
+    } catch (err) {
+      console.error('Error adding comment:', err);
+      alert('Failed to add comment');
+    } finally {
+      setCommentSubmitting(false);
+    }
+  };
+
+  const handleCommentDelete = async (commentId) => {
+    if (!currentUser) return;
+    
+    if (!window.confirm('Are you sure you want to delete this comment?')) return;
+    
+    try {
+      const res = await apiFetch(`/api/posts/${id}/comments/${commentId}`, {
+        method: 'DELETE',
+        headers: {
+          ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+        }
+      });
+      
+      if (res.ok) {
+        const comments = await res.json();
+        setPost(prev => ({ ...prev, comments }));
+      } else {
+        const data = await res.json();
+        alert(data.message || 'Failed to delete comment');
+      }
+    } catch (err) {
+      console.error('Error deleting comment:', err);
+      alert('Failed to delete comment');
+    }
+  };
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -105,22 +163,16 @@ const PostDetail = () => {
       )}
       {/* Comments */}
       <section className="mt-8">
-        <h2 className="text-xl font-semibold text-eco-green-700 mb-4">Comments</h2>
-        {post.comments && post.comments.length > 0 ? (
-          <ul className="space-y-4">
-            {post.comments.map(comment => (
-              <li key={comment._id} className="bg-eco-green-50 rounded-lg p-4 border border-eco-green-100">
-                <div className="flex items-center mb-2">
-                  <span className="font-semibold text-eco-green-800 mr-2">{comment.user?.name || 'Anonymous'}</span>
-                  <span className="text-xs text-gray-500">{new Date(comment.date).toLocaleString()}</span>
-                </div>
-                <p className="text-gray-700">{comment.text}</p>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p className="text-gray-500">No comments yet. Be the first to comment!</p>
-        )}
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-xl font-semibold text-eco-green-700">Comments ({post.comments?.length || 0})</h2>
+        </div>
+        
+        <CommentForm onSubmit={handleCommentSubmit} />
+        
+        <CommentList 
+          comments={post.comments || []} 
+          onDelete={handleCommentDelete} 
+        />
       </section>
       {/* Delete Button */}
       <div className="mt-8">

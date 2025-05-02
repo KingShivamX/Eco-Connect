@@ -35,7 +35,7 @@ const Home = () => {
   return (
     <div className="space-y-12">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-r from-eco-green-900 to-eco-green-800 text-black rounded-3xl shadow-xl overflow-hidden">
+      <section className="relative rounded-3xl shadow-xl overflow-hidden animate-fade-in shine blob" style={{ background: 'linear-gradient(to right, #34d399, #10b981, #059669)' }}>
         <div className="absolute inset-0 opacity-80"></div>
         <div className="relative z-10 px-8 py-16 md:py-24 md:px-12 max-w-5xl mx-auto flex flex-col items-center text-center">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 tracking-tight drop-shadow-lg">
@@ -47,13 +47,13 @@ const Home = () => {
           <div className="flex flex-wrap gap-4 justify-center">
             <Link 
               to="/posts" 
-              className="bg-white text-black hover:bg-eco-green-100 px-8 py-3 rounded-xl font-semibold text-lg shadow transition-colors duration-300"
+              className="bg-white text-black hover:bg-eco-green-100 px-8 py-3 rounded-xl font-semibold text-lg shadow btn-glow"
             >
               Browse Posts
             </Link>
             <Link 
               to="/events" 
-              className="bg-transparent hover:bg-eco-green-700 border-2 border-white px-8 py-3 rounded-xl font-semibold text-lg transition-colors duration-300 text-black"
+              className="bg-white/30 hover:bg-white/50 backdrop-blur-sm border-2 border-white px-8 py-3 rounded-xl font-semibold text-lg btn-glow text-black"
             >
               Discover Events
             </Link>
@@ -63,7 +63,7 @@ const Home = () => {
       </section>
       
       {/* User Welcome */}
-      <section className="bg-white/80 rounded-2xl shadow-lg p-8 flex flex-col md:flex-row items-center justify-between gap-8 border border-eco-green-100">
+      <section className="bg-white/80 rounded-2xl shadow-lg p-8 flex flex-col md:flex-row items-center justify-between gap-8 border border-eco-green-100 animate-fade-in-up card-hover">
         <div>
           <h2 className="text-2xl font-extrabold text-black">
             Hello, {currentUser?.name}! <span role="img" aria-label="wave">👋</span>
@@ -79,8 +79,8 @@ const Home = () => {
       {/* Content Sections */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Recent Posts */}
-        <section className="bg-white rounded-lg shadow-md overflow-hidden">
-          <div className="bg-eco-green-700 py-4 px-6">
+        <section className="bg-white rounded-lg shadow-md overflow-hidden animate-fade-in-up card-hover">
+          <div className="bg-eco-green-400 py-4 px-6 border-b border-eco-green-200 shadow-sm">
             <h2 className="text-xl font-bold text-black">Recent Posts</h2>
           </div>
           <div className="p-6">
@@ -91,7 +91,7 @@ const Home = () => {
             ) : recentPosts.length > 0 ? (
               <div className="space-y-4">
                 {recentPosts.map(post => (
-                  <div key={post._id} className="border-b border-gray-200 pb-4 last:border-0 last:pb-0">
+                  <div key={post._id} className="border-b border-gray-200 pb-4 last:border-0 last:pb-0 hover:bg-eco-green-50 transition-colors duration-300 p-2 rounded-lg">
                     <Link to={`/posts/${post._id}`} className="block">
                       <h3 className="text-lg font-semibold text-black hover:text-eco-green-600 transition-colors">
                         {post.title}
@@ -123,8 +123,8 @@ const Home = () => {
         </section>
         
         {/* Upcoming Events */}
-        <section className="bg-white rounded-lg shadow-md overflow-hidden">
-          <div className="bg-earth-brown-700 py-4 px-6">
+        <section className="bg-white rounded-lg shadow-md overflow-hidden animate-fade-in-up card-hover">
+          <div className="bg-earth-brown-400 py-4 px-6 border-b border-earth-brown-200 shadow-sm">
             <h2 className="text-xl font-bold text-black">Upcoming Events</h2>
           </div>
           <div className="p-6">
@@ -135,7 +135,7 @@ const Home = () => {
             ) : upcomingEvents.length > 0 ? (
               <div className="space-y-4">
                 {upcomingEvents.map(event => (
-                  <div key={event._id} className="border-b border-gray-200 pb-4 last:border-0 last:pb-0">
+                  <div key={event._id} className="border-b border-gray-200 pb-4 last:border-0 last:pb-0 hover:bg-earth-brown-50 transition-colors duration-300 p-2 rounded-lg">
                     <Link to={`/events/${event._id}`} className="block">
                       <h3 className="text-lg font-semibold text-earth-brown-800 hover:text-earth-brown-600 transition-colors">
                         {event.title}
@@ -177,11 +177,48 @@ const Home = () => {
         </section>
       </div>
       
+      {/* Helpful Videos */}
+      <section className="bg-white rounded-lg shadow-md p-8 animate-fade-in-up card-hover">
+        <h2 className="text-2xl font-bold text-black mb-4">Helpful Videos</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="w-full h-56 transform transition-all duration-300 hover:scale-105 hover:shadow-xl rounded-lg overflow-hidden">
+            <iframe
+              className="w-full h-full rounded-lg"
+              src="https://www.youtube.com/embed/7qkaz8ChelI"
+              title="Sustainable Living Tips"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+          </div>
+          <div className="w-full h-56 transform transition-all duration-300 hover:scale-105 hover:shadow-xl rounded-lg overflow-hidden">
+            <iframe
+              className="w-full h-full rounded-lg"
+              src="https://www.youtube.com/embed/A3rLfrIUzY4"
+              title="Recycling How-To"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+          </div>
+          <div className="w-full h-56 transform transition-all duration-300 hover:scale-105 hover:shadow-xl rounded-lg overflow-hidden">
+            <iframe
+              className="w-full h-full rounded-lg"
+              src="https://www.youtube.com/embed/VUUUxOl715s"
+              title="Environmental Activities"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+          </div>
+        </div>
+      </section>
+      
       {/* Environmental Tips */}
-      <section className="bg-leaf-yellow-50 border border-leaf-yellow-200 rounded-2xl shadow p-8">
+      <section className="bg-leaf-yellow-50 border border-leaf-yellow-200 rounded-2xl shadow p-8 animate-fade-in-up card-hover">
         <h2 className="text-2xl font-extrabold text-leaf-yellow-900 mb-4">Eco Tip of the Day</h2>
         <div className="flex flex-col md:flex-row items-start gap-6">
-          <div className="flex-shrink-0 bg-leaf-yellow-200 p-5 rounded-full shadow">
+          <div className="flex-shrink-0 bg-leaf-yellow-200 p-5 rounded-full shadow float">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-leaf-yellow-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
             </svg>

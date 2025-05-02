@@ -18,35 +18,35 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-eco-green-900 text-black rounded-b-3xl shadow-lg mb-6">
-      <div className="max-w-7xl mx-auto px-6">
+    <nav className="text-black rounded-b-3xl shadow-lg mb-6 relative overflow-hidden" style={{ background: 'linear-gradient(120deg, #4ade80 0%, #22c55e 50%, #a3e635 100%)' }}>
+      <div className="shine absolute inset-0 pointer-events-none z-0"></div>
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
         <div className="flex justify-between items-center h-16">
           {/* Logo and brand name */}
           <div className="flex items-center">
-            <Link to="/" className="flex items-center space-x-2 hover:opacity-90 transition-opacity">
-              <span className="text-3xl font-extrabold tracking-tight text-black">🌿 EcoConnect</span>
+            <Link to="/" className="flex items-center space-x-2 hover:opacity-90 transition-all duration-300 transform hover:scale-105">
+              <span className="text-3xl font-extrabold tracking-tight text-black float">🌿 EcoConnect</span>
             </Link>
           </div>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex items-center space-x-8">
-            <Link to="/" className="text-black hover:text-black font-medium transition-colors">
+          <div className="hidden md:flex items-center space-x-8 animate-fade-in-up">
+            <Link to="/" className="text-black font-medium transform transition-all duration-300 hover:translate-y-[-2px] relative after:absolute after:w-0 after:h-[2px] after:bottom-[-4px] after:left-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full">
               Home
             </Link>
-            <Link to="/posts" className="text-black hover:text-black font-medium transition-colors">
+            <Link to="/posts" className="text-black font-medium transform transition-all duration-300 hover:translate-y-[-2px] relative after:absolute after:w-0 after:h-[2px] after:bottom-[-4px] after:left-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full">
               Posts
             </Link>
-            <Link to="/events" className="text-black hover:text-black font-medium transition-colors">
+            <Link to="/events" className="text-black font-medium transform transition-all duration-300 hover:translate-y-[-2px] relative after:absolute after:w-0 after:h-[2px] after:bottom-[-4px] after:left-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full">
               Events
             </Link>
             {currentUser && (
               <div
                 className="relative ml-4"
-                onMouseEnter={() => setProfileMenuOpen(true)}
-                onMouseLeave={() => setProfileMenuOpen(false)}
+                onClick={() => setProfileMenuOpen(!profileMenuOpen)}
               >
                 <button
-                  className="flex items-center bg-eco-green-800 rounded-full px-3 py-1 hover:bg-eco-green-700 focus:outline-none shadow transition"
+                  className="flex items-center bg-eco-green-500 rounded-full px-4 py-2 hover:bg-eco-green-400 focus:outline-none shadow-md transition-all duration-300 transform hover:translate-y-[-2px] hover:shadow-lg btn-glow relative z-30"
                   aria-haspopup="true"
                   aria-expanded={profileMenuOpen}
                 >
@@ -57,11 +57,11 @@ const Navbar = () => {
                   <svg className="ml-2 w-4 h-4 text-black transition-colors" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7"/></svg>
                 </button>
                 {profileMenuOpen && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl py-2 z-20">
-                    <Link to="/profile" className="block px-4 py-2 text-sm text-black hover:bg-eco-green-50 rounded-t-xl">My Profile</Link>
+                  <div className="fixed right-auto mt-2 w-48 bg-white rounded-xl shadow-xl py-2 z-[9999] animate-fade-in border-2 border-eco-green-200" style={{position: 'absolute', top: '100%'}}>
+                    <Link to="/profile" className="block px-4 py-2 text-sm text-black hover:bg-eco-green-50 rounded-t-xl transition-all duration-300 hover:pl-6">My Profile</Link>
                     <button
                       onClick={handleLogout}
-                      className="w-full text-left px-4 py-2 text-sm text-black hover:bg-eco-green-50 rounded-b-xl"
+                      className="w-full text-left px-4 py-2 text-sm text-black hover:bg-eco-green-50 rounded-b-xl transition-all duration-300 hover:pl-6"
                     >
                       Logout
                     </button>

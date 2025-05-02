@@ -239,3 +239,73 @@ exports.completeEvent = async (req, res) => {
     res.status(500).json({ message: 'Server error completing event' });
   }
 };
+
+// Add comment to event
+exports.addComment = async (req, res) => {
+  try {
+    const { text } = req.body;
+    
+    if (!text) {
+      return res.status(400).json({ message: 'Comment text is required' });
+    }
+    
+    const event = await Event.findById(req.params.id);
+    
+    if (!event) {
+      return res.status(404).json({ message: 'Event not found' });
+    }
+    
+    // Add comment
+    event.comments.unshift({
+      user: req.user.id,
+      text
+    });
+    
+    await event.save();
+    
+    // Populate user info for new comment before sending response
+    await event.populate('comments.user', 'name avatar');
+    
+    res.json(event.comments);
+  } catch (error) {
+    console.error('Add comment error:', error);
+    res.status(500).json({ message: 'Server error adding comment' });
+  }
+};
+
+// Delete comment from event
+exports.deleteComment = async (req, res) => {
+  try {
+    const event = await Event.findById(req.params.id);
+    
+    if (!event) {
+      return res.status(404).json({ message: 'Event not found' });
+    }
+    
+    // Find comment
+    const comment = event.comments.find(
+      comment => comment._id.toString() === req.params.commentId
+    );
+    
+    if (!comment) {
+      return res.status(404).json({ message: 'Comment not found' });
+    }
+    
+    // Check if user is comment owner or admin
+    if (comment.user.toString() !== req.user.id && req.user.role !== 'admin') {
+      return res.status(403).json({ message: 'Not authorized to delete this comment' });
+    }
+    
+    // Remove comment
+    event.comments = event.comments.filter(
+      comment => comment._id.toString() !== req.params.commentId
+    );
+    
+    await event.save();
+    
+    res.json(event.comments);
+  } catch (error) {
+    console.error('Delete comment error:', error);
+    res.status(500).json({ message: 'Server error deleting comment' });
+  }
+};

@@ -14,4 +14,8 @@ router.delete('/:id', protect, eventController.deleteEvent);
 router.post('/:id/attend', protect, eventController.toggleAttendance);
 router.post('/:id/complete', protect, eventController.completeEvent);
 
+// Comment routes
+router.post('/:id/comments', protect, eventController.addComment);
+router.delete('/:id/comments/:commentId', protect, eventController.deleteComment);
+
 module.exports = router;

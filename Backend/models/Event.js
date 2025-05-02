@@ -40,7 +40,21 @@ const EventSchema = new mongoose.Schema({
   ecoPointsReward: {
     type: Number,
     default: 10
-  }
+  },
+  comments: [{
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User'
+    },
+    text: {
+      type: String,
+      required: true
+    },
+    date: {
+      type: Date,
+      default: Date.now
+    }
+  }]
 }, { timestamps: true });
 
 module.exports = mongoose.model('Event', EventSchema);
